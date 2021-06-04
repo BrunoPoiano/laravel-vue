@@ -1,6 +1,6 @@
 <template>
     <div class="container p-3">
-        <div class="input-group mb-3">
+        <div class="input-group-text mb-3">
             <input
                 type="text"
                 class="form-control"

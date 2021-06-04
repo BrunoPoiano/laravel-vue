@@ -13,7 +13,7 @@ use Inertia\Inertia;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,3 +33,8 @@ Route::prefix('/todo')->middleware(['auth:sanctum', 'verified'])->name('todo.lay
 
 //Direcionar para Jogo do tempo
 Route::prefix('/game')->middleware(['auth:sanctum', 'verified'])->name('game.layout.')->group(base_path('routes/gameapp/game.php'));
+
+//Direcionar para Blog
+Route::prefix('/blog')->middleware(['auth:sanctum', 'verified'])->name('blog.layout.')->group(base_path('routes/blogapp/blog.php'));
+
+//Route::get('/secao', [App\Http\Controllers\BlogApp\BlogAppController::class, 'secao']);

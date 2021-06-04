@@ -28,9 +28,15 @@
                                 </jet-nav-link>
                             </div>
 
-                                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('game.layout.index')" :active="route().current('game.layout.index')">
                                     Game App
+                                </jet-nav-link>
+                            </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('blog.layout.index')" :active="route().current('blog.layout.index')">
+                                    Blog App
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -162,6 +168,10 @@
 
                         <jet-responsive-nav-link :href="route('game.layout.index')" :active="route().current('game.layout.index')">
                             Game App
+                        </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link :href="route('blog.layout.index')" :active="route().current('blog.layout.index')">
+                            Blog App
                         </jet-responsive-nav-link>
                     </div>
 
@@ -300,6 +310,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #444;
-  margin-top: 60px;
 }
 </style>
