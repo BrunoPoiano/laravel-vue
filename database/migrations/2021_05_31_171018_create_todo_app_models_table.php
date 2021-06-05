@@ -16,6 +16,7 @@ class CreateTodoAppModelsTable extends Migration
         Schema::create('todo_app_models', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->integer('user_id');
             $table->boolean('finalizado')->default(false);
             $table->timestamps();
         });

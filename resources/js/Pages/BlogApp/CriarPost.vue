@@ -66,10 +66,7 @@
               {{ tag }}
             </div>
           </div>
-          <div class="mb-3">
-            <label for=""> Img</label>
-            <input type="file" class="form-control-file"  name="profile_img" />
-          </div>
+
           <div class="mb-3">
             <textarea
               v-model="post.conteudo"
@@ -104,14 +101,15 @@
 <script>
 import { ref } from "vue";
 import GetSecoes from "./Composables/GetSecoes";
+import PictureInput from "vue-picture-input";
 export default {
   emits: ["cont"],
+  components: ["PictureInput"],
   setup(props, context) {
     const { getsecoes, secao, errorSecao } = GetSecoes();
     getsecoes();
 
     const post = ref({ titulo: "", sec: "", conteudo: "" });
-    const img = ref();
     const tags = ref([]);
     const temptags = ref();
     const tag = ref("");
@@ -160,7 +158,6 @@ export default {
       temptags,
       deletetag,
       tags,
-      img,
     };
   },
 };

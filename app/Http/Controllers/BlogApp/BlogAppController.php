@@ -43,7 +43,7 @@ class BlogAppController extends Controller
     {
 
         if ($request) {
-            if ($request->id == 1) {
+            if ($request->id == null) {
                 $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
                     ->get(["blog_posts.*", 'secaos.nome']);
 
@@ -69,6 +69,20 @@ class BlogAppController extends Controller
         return false;
     }
 
+    public function getTagsConteudo(Request $request)
+    {
+        $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
+        ->where('blog_posts.tags', 'like', "%{$request->tag}%")
+        ->get(["blog_posts.*", 'secaos.nome']);
+
+    for ($i = 0; $i < count($posts); $i++) {
+        if ($posts[$i]->user_id == Auth::id()) {
+            $posts[$i]->deletar = true;
+        }
+    }
+    return $posts;
+    }
+
     public function delete(Request $request)
     {
         if ($request) {
@@ -80,10 +94,6 @@ class BlogAppController extends Controller
 
     public function secao()
     {
-
-        $s0 = new Secao();
-        $s0->nome = 'Hot';
-        $s0->save();
 
         $s1 = new Secao();
         $s1->nome = 'Engraçado';

@@ -4,7 +4,24 @@
         role="group"
         aria-label="Basic radio toggle button group"
     >
+  
+          
         <div v-if="secao.length">
+              <input
+                    type="radio"
+                    class="btn-check"
+                    name="btnradio"
+                    id="teste"
+                    autocomplete="off"
+                    checked
+                />
+                <label
+                    class="btn btn-outline-primary d-grid gap-2 mx-auto"
+                    for="teste"
+                    @click="secaoConteudo()"
+                >
+                    Hot</label
+                >
             <div v-for="sec in secao" :key="sec.id">
                 <input
                     type="radio"

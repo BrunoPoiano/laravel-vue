@@ -1,62 +1,67 @@
 <template>
-  <div class="row pb-4 g-0 ">
-    <div class="p-2 ">
+  <div class="row pb-4 g-0">
+
+
+    <div class="p-2">
       <criar-post @cont="getConteudo" />
     </div>
     <div class="col">
       <div class="col-3 float-start m-0">
         <get-secao @idsc="getConteudo" />
       </div>
-      <div class="col float-center ">
+      <div class="col float-center">
         
-          <div class="row " v-if="posts.length">
-            <div class="col" v-for="post in posts" :key="post.id">
-              <h5 class="card-secao text-left fw-bold pt-3">
-                {{ post.nome }}
-              </h5>
-              <div class="card">
-                  <div v-if="post.path">
+    <div v-if="conteudoTitulo">
+      <h1 class=" fs-2 text-left fw-bold pt-3">{{conteudoTitulo}} </h1>
+    </div>
+        <div class="row" v-if="posts.length">
+          <div class="col" v-for="post in posts" :key="post.id">
+            <h5 class="card-secao text-left fw-bold pt-3 ">
+              {{ post.nome }}
+            </h5>
+            <div class="card">
+              <div v-if="post.path">
                 <img src="" class="card-img-top" alt="..." />
-
-                  </div>
-                <div class="card-body">
-                  <h5 class="card-title">{{ post.titulo }}</h5>
-                  <div v-for="tag in post.tags" :key="tag">
-                    <h1 class="card-text card-tags">
-                      {{ tag }}
-                    </h1>
-                  </div>
-                  <p class="card-text">
-                    {{ post.conteudo }}
-                  </p>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-capitalize">{{ post.titulo }}</h5>
+                <div class="p-2 fs-5 text-capitalize">
+                  <h1 
+                   v-for="tag in post.tags" :key="tag"
+                  class="card-text card-tags" @click="getTag(tag)">
+                    {{ tag }}
+                  </h1>
                 </div>
-                <div class="dropdown pb-2 pr-2">
-                  <a
-                    class="btn btn-secondary dropdown-toggle float-right"
-                    href="#"
-                    role="button"
-                    id="dropdownMenuLink"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                  </a>
+                <p class="card-text">
+                  {{ post.conteudo }}
+                </p>
+              </div>
+              <div class="dropdown pb-2 pr-2">
+                <a
+                  class="btn btn-secondary dropdown-toggle float-right"
+                  href="#"
+                  role="button"
+                  id="dropdownMenuLink"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                </a>
 
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <div v-if="post.deletar">
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click="deletarPublicacao(post.id)"
-                          >Deletar</a
-                        >
-                      </li>
-                    </div>
-                  </ul>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <div v-if="post.deletar">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click="deletarPublicacao(post.id)"
+                        >Deletar</a
+                      >
+                    </li>
+                  </div>
+                </ul>
               </div>
             </div>
-        
+          </div>
         </div>
         <div v-else>
           <h1>Carregando...</h1>
@@ -75,20 +80,26 @@ export default {
   setup() {
     const posts = ref([]);
     const posttags = ref();
+    const conteudoTitulo = ref();
 
     const getConteudo = async (id) => {
       if (!id) {
-        id = 1;
+        id = null;
       }
       console.log("id", id);
       axios.post(route("blog.layout.getConteudo"), { id }).then((resp) => {
-        console.log(resp.data);
-        posts.value = resp.data;
+        conteudoTitulo.value = null 
+        montarConteudo(resp);
+      });
+    };
 
-        posts.value.forEach((pv) => {
-          pv.tags = pv.tags.split(" ");
-          console.log(pv.tags);
-        });
+    const montarConteudo = (resp) => {
+      console.log(resp.data);
+      posts.value = resp.data;
+
+      posts.value.forEach((pv) => {
+        pv.tags = pv.tags.split(" ");
+        console.log(pv.tags);
       });
     };
 
@@ -104,11 +115,19 @@ export default {
         });
     };
 
+    const getTag = (tag) => {
+      console.log(tag);
+      axios.post(route("blog.layout.getTagsConteudo"), { tag }).then((resp) => {
+        conteudoTitulo.value = tag;
+        montarConteudo(resp);
+      });
+    };
+
     onMounted(() => {
       getConteudo();
     });
 
-    return { posts, getConteudo, deletarPublicacao };
+    return { posts, getConteudo, deletarPublicacao, getTag, conteudoTitulo };
   },
 };
 </script>

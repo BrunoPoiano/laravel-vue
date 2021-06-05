@@ -5,6 +5,7 @@ namespace App\Http\Controllers\TodoApp;
 use App\Http\Controllers\Controller;
 use App\Models\TodoApp\TodoAppModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class TodoAppController extends Controller
@@ -20,8 +21,11 @@ class TodoAppController extends Controller
         if ($request->afazer == null) {
             return false;
         }
-        $novoAfazer = new TodoAppModel();
-        $novoAfazer->nome = $request->afazer;
+        $novoAfazer = new TodoAppModel([
+            'nome' => $request->afazer,
+            'user_id' => Auth::id(),
+
+        ]);
         $novoAfazer->save();
 
         return true;
@@ -29,10 +33,12 @@ class TodoAppController extends Controller
 
     public function getAfazeres()
     {
-        $afazeres =  TodoAppModel::orderby('created_at', 'desc')->get();
-        if($afazeres){
-            return  $afazeres;
-        }else{
+        $afazeres = TodoAppModel::orderby('created_at', 'desc')
+        ->where('user_id', Auth::id())
+        ->get();
+        if ($afazeres) {
+            return $afazeres;
+        } else {
             return 'Erro';
         }
     }
@@ -48,12 +54,13 @@ class TodoAppController extends Controller
         }
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $deletarAfazer = TodoAppModel::find($request->afazer);
-        if($deletarAfazer){
-        $deletarAfazer->delete();
-        return true;
-        }else{
+        if ($deletarAfazer) {
+            $deletarAfazer->delete();
+            return true;
+        } else {
             return false;
         }
     }
