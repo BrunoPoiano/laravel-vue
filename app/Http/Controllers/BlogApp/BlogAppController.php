@@ -23,20 +23,30 @@ class BlogAppController extends Controller
 
     public function store(Request $request)
     {
-       //return $request;
+       
 
         if ($request) {
+
+            $path = null;
+            if ($request->hasFile('file')) {
+                $path = $request->file->store('public/BlogApp/Posts');
+                
+            }
+
+
             $newBlosPost = new BlogPosts([
                 'user_id' => Auth::id(),
                 'titulo' => $request->titulo,
                 'secao_id' => $request->sec,
                 'conteudo' => $request->conteudo,
                 'tags' => $request->tags,
+                'path' => $path,
             ]);
             $newBlosPost->save();
             return true;
         }
         return false;
+
     }
 
     public function getConteudo(Request $request)
@@ -51,7 +61,9 @@ class BlogAppController extends Controller
                     if ($posts[$i]->user_id == Auth::id()) {
                         $posts[$i]->deletar = true;
                     }
+
                 }
+
                 return $posts;
             }
 
@@ -64,6 +76,7 @@ class BlogAppController extends Controller
                     $posts[$i]->deletar = true;
                 }
             }
+
             return $posts;
         }
         return false;
@@ -72,15 +85,15 @@ class BlogAppController extends Controller
     public function getTagsConteudo(Request $request)
     {
         $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
-        ->where('blog_posts.tags', 'like', "%{$request->tag}%")
-        ->get(["blog_posts.*", 'secaos.nome']);
+            ->where('blog_posts.tags', 'like', "%{$request->tag}%")
+            ->get(["blog_posts.*", 'secaos.nome']);
 
-    for ($i = 0; $i < count($posts); $i++) {
-        if ($posts[$i]->user_id == Auth::id()) {
-            $posts[$i]->deletar = true;
+        for ($i = 0; $i < count($posts); $i++) {
+            if ($posts[$i]->user_id == Auth::id()) {
+                $posts[$i]->deletar = true;
+            }
         }
-    }
-    return $posts;
+        return $posts;
     }
 
     public function delete(Request $request)
