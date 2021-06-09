@@ -118,7 +118,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -143,7 +142,6 @@ export default {
             imag.value = e.target.files[0];
             fdata.append("file", imag.value);
         };
- 
 
         const addTags = (e) => {
             if (e.key === " " && temptags.value) {
@@ -162,7 +160,7 @@ export default {
 
         const criarPost = () => {
             tags.value.forEach((tg) => {
-                tag.value += tg + " ";
+                tag.value += tg;
             });
 
             fdata.append("titulo", post.value.titulo);
@@ -171,9 +169,10 @@ export default {
             fdata.append("tags", tag.value);
 
             axios
-                .post(route("blog.layout.store"), 
-     
-                    fdata,
+                .post(
+                    route("blog.layout.store"),
+
+                    fdata
                 )
                 .then((resp) => {
                     console.log(resp);

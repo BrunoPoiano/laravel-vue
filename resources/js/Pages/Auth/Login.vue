@@ -25,12 +25,19 @@
                 <label class="flex items-center">
                     <jet-checkbox name="remember" v-model:checked="form.remember" />
                     <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
+                </label>                 
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <inertia-link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    Não Possui Cadastro?
+                </inertia-link>
+            </div>
+             
+
+            <div class="flex items-center justify-end mt-4">
                 <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
+                    Forgot your password?   
                 </inertia-link>
 
                 <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -42,6 +49,9 @@
 </template>
 
 <script>
+
+
+
     import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
     import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
     import JetButton from '@/Jetstream/Button'

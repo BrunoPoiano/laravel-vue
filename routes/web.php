@@ -37,4 +37,4 @@ Route::prefix('/game')->middleware(['auth:sanctum', 'verified'])->name('game.lay
 //Direcionar para Blog
 Route::prefix('/blog')->middleware(['auth:sanctum', 'verified'])->name('blog.layout.')->group(base_path('routes/blogapp/blog.php'));
 
-//Route::get('/secao', [App\Http\Controllers\BlogApp\BlogAppController::class, 'secao']);
+Route::get('/secao', [App\Http\Controllers\BlogApp\BlogAppController::class, 'secao']);

@@ -18,7 +18,7 @@ class CreateBlogPostsTable extends Migration
             $table->integer('user_id');
             $table->String('titulo');
             $table->integer('secao_id');
-            $table->String('conteudo');
+            $table->String('conteudo', 10000);
             $table->String('path')->nullable();
             $table->string('tags')->nullable();
             $table->timestamps();

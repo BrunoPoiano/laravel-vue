@@ -7,6 +7,7 @@ use App\Models\BlogApp\BlogPosts;
 use App\Models\BlogApp\Secao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class BlogAppController extends Controller
@@ -23,16 +24,16 @@ class BlogAppController extends Controller
 
     public function store(Request $request)
     {
-       
 
         if ($request) {
-
+            $request->validate([
+                'file' => 'file|image|',
+            ]);
             $path = null;
             if ($request->hasFile('file')) {
                 $path = $request->file->store('public/BlogApp/Posts');
-                
-            }
 
+            }
 
             $newBlosPost = new BlogPosts([
                 'user_id' => Auth::id(),
@@ -99,7 +100,15 @@ class BlogAppController extends Controller
     public function delete(Request $request)
     {
         if ($request) {
-            BlogPosts::find($request->id)->delete();
+
+            $delPost = BlogPosts::find($request->id);
+
+         
+
+            if ($delPost->path) {
+                Storage::delete($delPost->path);
+            }
+            $delPost->delete();
             return true;
         }
         return false;
