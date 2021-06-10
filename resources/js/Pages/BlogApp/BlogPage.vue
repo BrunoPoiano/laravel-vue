@@ -103,6 +103,11 @@ export default {
     const montarConteudo = (resp) => {
       posts.value = resp.data;
 
+      posts.value.forEach(cont =>{
+       cont.conteudo = cont.conteudo.substring(0, 50) + "...";
+
+      })
+
       posts.value.forEach((post) => {
         if (post.path) {
           post.url = post.path.split("public/");
