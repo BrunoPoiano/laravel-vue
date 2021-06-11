@@ -10,3 +10,8 @@ Route::post('/getConteudo',[BlogAppController::class, 'getConteudo'])->name('get
 Route::post('/store', [BlogAppController::class, 'store'])->name('store');
 Route::post('/delete', [BlogAppController::class, 'delete'])->name('delete'); 
 Route::post('/getTagsConteudo', [BlogAppController::class, 'getTagsConteudo'])->name('getTagsConteudo'); 
+
+///////////////////////////PAGINA//////////////////////////
+
+Route::get('/pagina/{id}', [BlogAppController::class, 'pagina'])->name('pagina'); 
+Route::post('/getContentbyId', [BlogAppController::class, 'getContentbyId'])->name('getContentbyId'); 

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use SebastianBergmann\Environment\Console;
 
 class BlogAppController extends Controller
 {
@@ -16,6 +17,7 @@ class BlogAppController extends Controller
     {
         return Inertia::render('BlogApp/LayoutBlogApp');
     }
+
 
     public function getSecao()
     {
@@ -141,4 +143,26 @@ class BlogAppController extends Controller
         $s6->nome = 'HumorNegro';
         $s6->save();
     }
+
+
+    ///////////////////////////////// PAGINA CODE ///////////////////////////////
+    
+    public function pagina($id){
+        return Inertia::render('BlogApp/Pagina/LayoutPagina')->with('id',$id);
+    }
+
+    public function getContentbyId(Request $request){
+        $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
+                ->where('blog_posts.id', $request->id )
+                ->get(["blog_posts.*", 'secaos.nome']);
+
+            for ($i = 0; $i < count($posts); $i++) {
+                if ($posts[$i]->user_id == Auth::id()) {
+                    $posts[$i]->deletar = true;
+                }
+            }
+
+            return $posts;
+    }
+
 }

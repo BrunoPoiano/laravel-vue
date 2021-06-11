@@ -16,7 +16,7 @@
         </div>
 
         <div class="row" v-if="posts.length">
-          <div class="" v-for="post in posts" :key="post.id">
+          <div class="" v-for="(post, index) in posts" :key="index">
             <h5 class="card-secao text-left fw-bold pt-3">
               {{ post.nome }}
             </h5>
@@ -26,9 +26,11 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title text-capitalize">
+                  
+                  <a class="card-title text-capitalize" :href="route('blog.layout.pagina',{id:post.id})">
                     {{ post.titulo }}
-                  </h5>
+                    
+                  </a>
                   <div class="p-2 fs-5 text-capitalize">
                     <h1
                       v-for="tag in post.tags"
@@ -162,6 +164,9 @@ export default {
   font-size: 2.5rem;
   font: bolder;
   color: black;
+}
+.card-title:hover{
+  color: red;
 }
 .card-secao {
   padding: 2px;
