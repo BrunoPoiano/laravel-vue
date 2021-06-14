@@ -37,4 +37,5 @@ Route::prefix('/game')->middleware(['auth:sanctum', 'verified'])->name('game.lay
 //Direcionar para Blog
 Route::prefix('/blog')->middleware(['auth:sanctum', 'verified'])->name('blog.layout.')->group(base_path('routes/blogapp/blog.php'));
 
-Route::get('/secao', [App\Http\Controllers\BlogApp\BlogAppController::class, 'secao']);
+//Direcionar ShoopingCart
+Route::prefix('/shoppingcart')->middleware(['auth:sanctum', 'verified'])->name('shoppingcart.layout.')->group(base_path('routes/shoppingcartapp/shoppingcart.php'));
