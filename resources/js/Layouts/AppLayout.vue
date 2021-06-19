@@ -45,6 +45,13 @@
                                     Shopping Cart App
                                 </jet-nav-link>
                             </div>
+
+                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('palavras.layout.index')" :active="route().current('palavras.layout.index')">
+                                    Palavras App
+                                </jet-nav-link>
+                            </div>
+                            
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -183,6 +190,12 @@
                         <jet-responsive-nav-link :href="route('shoppingcart.layout.index')" :active="route().current('shoppingcart.layout.index')">
                             Shopping Cart App
                         </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link :href="route('palavras.layout.index')" :active="route().current('palavras.layout.index')">
+                            Palavras App
+                        </jet-responsive-nav-link>
+
+                        
                     </div>
 
                     <!-- Responsive Settings Options -->

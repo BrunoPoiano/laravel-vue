@@ -39,3 +39,6 @@ Route::prefix('/blog')->middleware(['auth:sanctum', 'verified'])->name('blog.lay
 
 //Direcionar ShoopingCart
 Route::prefix('/shoppingcart')->middleware(['auth:sanctum', 'verified'])->name('shoppingcart.layout.')->group(base_path('routes/shoppingcartapp/shoppingcart.php'));
+
+//Direcionar jogos de palavras
+Route::prefix('/palavras')->middleware(['auth:sanctum', 'verified'])->name('palavras.layout.')->group(base_path('routes/palavras/palavras.php'));

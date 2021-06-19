@@ -5,6 +5,8 @@ import { createApp, h } from 'vue';
 import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 
+import Store from './Pages/ShoppingCartApp/store/store';
+import Vuex from 'vuex'
 
 
 const el = document.getElementById('app');
@@ -18,6 +20,8 @@ createApp({
 })
     .mixin({ methods: { route } })
     .use(InertiaPlugin)
+    .use(Store)
+    .use(Vuex)
     .mount(el);
 
 InertiaProgress.init({ color: '#4B5563' });

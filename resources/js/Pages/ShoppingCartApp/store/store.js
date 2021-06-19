@@ -1,7 +1,15 @@
-//import { createStore } from "vuex";
+import Vuex from "vuex";
 
-export default shoppingCart({
-    state:{
-        cart:[],
+const store = new Vuex.Store({
+    state: {
+        cart: [],
     },
-})
+    getters: {},
+    mutations: {
+        addcarrinho() {},
+    },
+    actions: {},
+    modules: {},
+});
+
+export default store;

@@ -16,7 +16,7 @@
                   </a>
         |
           <a
-          :href="route('shoppingcart.layout.shoppingcart')"
+          :href="route('shoppingcart.layout.getcarrinho')"
           class="btn btn-success "
         >
           Shopping Cart
