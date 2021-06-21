@@ -1,81 +1,122 @@
 <template>
-    <div class="container p-2">
-        <div class="card card-body">
-            <label class="form-label">Tamanho Desejado</label>
-            <input
-                class="form-control"
-                min="5"
-                max="15"
-                type="range"
-                v-model="tamanho"
-                @change="gerador"
-            />
-
-            {{ tamanho }}
-
-            <div class="form-check">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="Maiusculas"
-                    v-model="chars"
-                    checked
-                />
-                <label
-                    class="form-check-label float-left"
-                    for="flexCheckDefault"
-                >
-                    Maiusculas
-                </label>
+    <div class="container">
+        <p>Gerador De Senha</p>
+        <div class="p-2">
+            <div class="boxs card card-body">
+                <div class="col">
+                    <p>{{ palavra }}</p>
+                </div>
             </div>
-            <div class="form-check">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="Minusculas"
-                    v-model="chars"
-                />
-                <label
-                    class="form-check-label float-left"
-                    for="flexCheckChecked"
-                >
-                    Minusculas
-                </label>
-            </div>
-            <div class="form-check">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    v-model="chars"
-                    value="Numeros"
-                />
-                <label
-                    class="form-check-label float-left"
-                    for="flexCheckChecked"
-                >
-                    Numeros
-                </label>
-            </div>
-            <div class="form-check">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    v-model="chars"
-                    value="Caracteres"
-                />
-                <label
-                    class="form-check-label float-left"
-                    for="flexCheckChecked"
-                >
-                    Caracteres
-                </label>
+        </div>
+        <p class="p-2">Personalize sua Senha</p>
+        <div class="boxs card card-body">
+            <div class="row">
+                <div class="col-2 pt-2">
+                    <div class="card">
+                        <h1 class="tmh">{{ tamanho }}</h1>
+                    </div>
+                </div>
+                <div class="col">
+                    <input
+                        class="form-control teste"
+                        min="0"
+                        max="30"
+                        type="range"
+                        v-model="tamanho"
+                        @change="gerador"
+                        @click="gerador"
+                    />
+                </div>
             </div>
 
-           
+            <div class="opcoes p-3">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="valores.maiusculas"
+                                v-model="chars"
+                                checked
+                            />
+                            <label
+                                class="form-check-label float-left"
+                                for="flexCheckDefault"
+                            >
+                                Maiusculas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="valores.minusculas"
+                                v-model="chars"
+                            />
+                            <label
+                                class="form-check-label float-left"
+                                for="flexCheckChecked"
+                            >
+                                Minusculas
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                v-model="chars"
+                                :value="valores.numeros"
+                            />
+                            <label
+                                class="form-check-label float-left"
+                                for="flexCheckChecked"
+                            >
+                                Numeros
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                v-model="chars"
+                                :value="valores.caracteres"
+                            />
+                            <label
+                                class="form-check-label float-left"
+                                for="flexCheckChecked"
+                            >
+                                Simbolos
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="palavra p-2">
-        <p>Palavra: {{ palavra }}</p>
+
+    <div class="container">
+        <div class="card boxs">
+            <p>Palindromo?</p>
+
+            <div class="card-body">
+                <input type="text" class="form-control" v-model="palavra" />
+                <p class="text-capitalize">{{ palindromo }}</p>
+            </div>
+            <div class="col pb-1">
+                <button class="btn btn-success" @click="encontrarpalindromo">
+                    Verificar
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -86,59 +127,187 @@ export default {
     setup() {
         const tamanho = ref(5);
         const palavra = ref("");
-        const chars = ref(["Maiusculas"]);
+        const valores = ref({
+            caracteres: "!@#$%&*()+=-/\|[]{}<>",
+            numeros: "0123456789",
+            minusculas: "abcdefghijklmnopqrstuvwxyz",
+            maiusculas: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        });
+        const chars = ref(["ABCDEFGHIJKLMNOPQRSTUVWXYZ"]);
+        const palindromo = ref();
 
         //Gerador de Palavras
-
-
-
         const gerador = (e) => {
             tamanho.value = e.target.value;
-
-            console.log(tamanho.value)
             palavra.value = "";
-            
-            // Declara todos os caracteres
-            const maiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const minusculas = "abcdefghijklmnopqrstuvwxyz";
-            const numeros = "0123456789";
-            const caracteres = "!@#$%&*()+=-";
 
             for (let i = 0; i < tamanho.value; i++) {
-                if (chars.value.includes("Maiusculas")) {
-                    palavra.value += maiusculas.charAt(
-                        Math.floor(Math.random() * maiusculas.length)
-                    );
+                var thing =
+                    chars.value[Math.floor(Math.random() * chars.value.length)];
+                palavra.value += thing.charAt(
+                    Math.floor(Math.random() * thing.length)
+                );
+            }
+            // palavra.value = palavra.value.substring(0, tamanho.value);
+        };
+
+        const encontrarpalindromo = () => {
+            
+            let palin = palavra.value;
+            palin = palin.replaceAll(" ", "");
+            palin = palin.toUpperCase();
+            let y = palin.length - 1;
+
+            if (
+                palin.length == 1 ||
+                palin.length == null ||
+                palin.length == 0
+            ) {
+                palindromo.value =
+                    "Palavra precisa ter no minimo dois caracteres ";
+            } else {
+                for (let i = 0; i < palin.length; i++) {
+                    let teste = text(palin[i], palin[y]);
+                    if (teste == false) {
+                        palindromo.value = "não é um palindromo";
+                        i = palin.length;
+                    } else {
+                        palindromo.value = "palindromo";
+                    }
+                    y--;
                 }
-                if (chars.value.includes("Minusculas")) {
-                    palavra.value += minusculas.charAt(
-                        Math.floor(Math.random() * minusculas.length)
-                    );
-                }
-                if (chars.value.includes("Numeros")) {
-                    palavra.value += numeros.charAt(
-                        Math.floor(Math.random() * numeros.length)
-                    );
-                }
-                if (chars.value.includes("Caracteres")) {
-                    palavra.value += caracteres.charAt(
-                        Math.floor(Math.random() * caracteres.length)
-                    );
-                }
-                palavra.value = palavra.value.substring(0, tamanho.value)
             }
         };
 
-        return { tamanho, palavra, chars, gerador };
+        const text = (l1, l2) => {
+            if (l1 === l2) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        return {
+            tamanho,
+            palavra,
+            chars,
+            gerador,
+            valores,
+            palindromo,
+            encontrarpalindromo,            
+        };
     },
 };
 </script>
 
 <style>
 .container {
-    max-width: 20rem;
+    max-width: 50rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
 }
-.palavra {
+p {
     font-size: 2rem;
+    color: black;
+    text-align: center;
+}
+.tmh {
+    font-size: 1.5rem;
+}
+.opcoes {
+    font-size: 2rem;
+}
+.boxs {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+input[type="range"] {
+    height: 30px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+}
+input[type="range"]:focus {
+    outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: #010305;
+    border-radius: 14px;
+    border: 1px solid #000000;
+}
+input[type="range"]::-webkit-slider-thumb {
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 22px;
+    width: 21px;
+    border-radius: 43px;
+    background: #fcfcfc;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -11px;
+}
+input[type="range"]:focus::-webkit-slider-runnable-track {
+    background: #010305;
+}
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: #010305;
+    border-radius: 14px;
+    border: 1px solid #000000;
+}
+input[type="range"]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 22px;
+    width: 21px;
+    border-radius: 43px;
+    background: #fcfcfc;
+    cursor: pointer;
+}
+input[type="range"]::-ms-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+input[type="range"]::-ms-fill-lower {
+    background: #010305;
+    border: 1px solid #000000;
+    border-radius: 28px;
+    box-shadow: 1px 1px 1px #000000;
+}
+input[type="range"]::-ms-fill-upper {
+    background: #010305;
+    border: 1px solid #000000;
+    border-radius: 28px;
+    box-shadow: 1px 1px 1px #000000;
+}
+input[type="range"]::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 22px;
+    width: 21px;
+    border-radius: 43px;
+    background: #fcfcfc;
+    cursor: pointer;
+}
+input[type="range"]:focus::-ms-fill-lower {
+    background: #010305;
+}
+input[type="range"]:focus::-ms-fill-upper {
+    background: #010305;
 }
 </style>
