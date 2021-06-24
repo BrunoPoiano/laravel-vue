@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-use SebastianBergmann\Environment\Console;
 
 class BlogAppController extends Controller
 {
@@ -17,7 +16,6 @@ class BlogAppController extends Controller
     {
         return Inertia::render('BlogApp/LayoutBlogApp');
     }
-
 
     public function getSecao()
     {
@@ -58,6 +56,7 @@ class BlogAppController extends Controller
         if ($request) {
             if ($request->id == null) {
                 $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
+                    ->orderBy('blog_posts.created_at', 'desc')
                     ->get(["blog_posts.*", 'secaos.nome']);
 
                 for ($i = 0; $i < count($posts); $i++) {
@@ -71,6 +70,7 @@ class BlogAppController extends Controller
             }
 
             $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
+                ->orderBy('blog_posts.created_at', 'desc')
                 ->where('secaos.id', $request->id)
                 ->get(["blog_posts.*", 'secaos.nome']);
 
@@ -104,8 +104,6 @@ class BlogAppController extends Controller
         if ($request) {
 
             $delPost = BlogPosts::find($request->id);
-
-         
 
             if ($delPost->path) {
                 Storage::delete($delPost->path);
@@ -144,25 +142,26 @@ class BlogAppController extends Controller
         $s6->save();
     }
 
-
     ///////////////////////////////// PAGINA CODE ///////////////////////////////
-    
-    public function pagina($id){
-        return Inertia::render('BlogApp/Pagina/LayoutPagina')->with('id',$id);
+
+    public function pagina($id)
+    {
+        return Inertia::render('BlogApp/Pagina/LayoutPagina')->with('id', $id);
     }
 
-    public function getContentbyId(Request $request){
+    public function getContentbyId(Request $request)
+    {
         $posts = BlogPosts::join('secaos', 'blog_posts.secao_id', 'secaos.id')
-                ->where('blog_posts.id', $request->id )
-                ->get(["blog_posts.*", 'secaos.nome']);
+            ->where('blog_posts.id', $request->id)
+            ->get(["blog_posts.*", 'secaos.nome']);
 
-            for ($i = 0; $i < count($posts); $i++) {
-                if ($posts[$i]->user_id == Auth::id()) {
-                    $posts[$i]->deletar = true;
-                }
+        for ($i = 0; $i < count($posts); $i++) {
+            if ($posts[$i]->user_id == Auth::id()) {
+                $posts[$i]->deletar = true;
             }
+        }
 
-            return $posts;
+        return $posts;
     }
 
 }

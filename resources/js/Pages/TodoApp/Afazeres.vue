@@ -4,12 +4,16 @@
             <div class="float-left col-10 text-capitalize pt-3">
                 <h3 :class="[afazer.finalizado ? 'finalizado' : '']">
                     {{ afazer.nome }} -
-                    <span>{{ dateTime ()}}</span>
+                    <span>{{ afazer.time }}</span>
                 </h3>
             </div>
             <div class="float-right col-2">
                 <button
-                    :class="[afazer.finalizado ? 'btn btn-sm btn-secondary p-2 m-2':'btn btn-sm btn-success p-2 m-2']"
+                    :class="[
+                        afazer.finalizado
+                            ? 'btn btn-sm btn-secondary p-2 m-2'
+                            : 'btn btn-sm btn-success p-2 m-2',
+                    ]"
                     @click="feito(afazer)"
                 >
                     <svg
@@ -80,15 +84,9 @@ export default {
                 });
         };
 
-        const dateTime = () => {
-             moment.locale("pt-br")
-            return moment(props.afazer.created_at).format("do MMMM YYYY, LT");
-        };
-
         return {
             feito,
             apagar,
-            dateTime,
         };
     },
 };

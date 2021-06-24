@@ -32,6 +32,7 @@
 <script>
 import { onMounted, ref } from "vue";
 import afazeres from "./Afazeres.vue";
+import moment from "moment";
 
 export default {
     components: { afazeres },
@@ -58,6 +59,13 @@ export default {
                 .get(route("todo.layout.getAfazeres"))
                 .then((resp) => {
                     afazeres.value = resp.data;
+                    afazeres.value.forEach((el) => {
+                        moment.locale("pt-br");
+                        el.time = moment(el.created_at).format(
+                            "Do MMMM YYYY, h:mm"
+                        );
+                    });
+                    
                 })
                 .catch((error) => {
                     console.log(error);

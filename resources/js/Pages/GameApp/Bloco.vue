@@ -27,7 +27,7 @@ export default {
 
         const parartimer = () => {
             clearInterval(tempo);
-            //console.log('tempoReacao' , tempoReacao.value);
+            console.log('tempoReacao' , tempoReacao.value);
             context.emit("end", tempoReacao.value);
         };
 

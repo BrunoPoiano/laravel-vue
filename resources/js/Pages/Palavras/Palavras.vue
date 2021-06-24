@@ -118,6 +118,25 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="card boxs">
+            <div class="p-2">
+                <button class="btn btn-success" @click="gerarteste">
+                    Gerar Palavras
+                </button>
+            </div>
+            <div class="p-2 tmh text-capitalize">
+                <h1>palindromo - {{ palindro }}</h1>
+                <h1>não palindromo - {{ naopalindro }}</h1>
+            </div>
+            <div class="pb-2">
+                <div v-for="(fim, index) in final" :key="index">
+                    <p>{{ fim }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -140,6 +159,7 @@ export default {
         const gerador = (e) => {
             tamanho.value = e.target.value;
             palavra.value = "";
+            palindromo.value = "";
 
             for (let i = 0; i < tamanho.value; i++) {
                 var thing =
@@ -152,7 +172,6 @@ export default {
         };
 
         const encontrarpalindromo = () => {
-            
             let palin = palavra.value;
             palin = palin.replaceAll(" ", "");
             palin = palin.toUpperCase();
@@ -187,6 +206,58 @@ export default {
             }
         };
 
+        ////////////////////////////////////////////
+
+        const teste = ref([]);
+        const temp = ref("");
+        const valor = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        const resul = ref("");
+        const final = ref([]);
+        const palindro = ref();
+        const naopalindro = ref();
+
+        const gerarteste = () => {
+            teste.value.length = 0;
+            final.value.length = 0;
+            naopalindro.value = 0;
+            palindro.value = 0;
+            for (let i = 0; i < 10; i++) {
+                temp.value = "";
+                for (let i = 0; i < 5; i++) {
+                    var thing =
+                        valor.value[
+                            Math.floor(Math.random() * valor.value.length)
+                        ];
+                    temp.value += thing.charAt(
+                        Math.floor(Math.random() * thing.length)
+                    );
+                }
+                teste.value.push(temp.value);
+            }
+
+            teste.value.forEach((el) => {
+                let y = el.length - 1;
+                let tes = 0;
+                for (let i = 0; i < el.length; i++) {
+                    let teste = text(el[i], el[y]);
+                    if (teste == false) {
+                        resul.value = "não é um palindromo - " + el;
+                        naopalindro.value++;
+                        i = el.length;
+                    } else {
+                        resul.value = "palindromo - " + el;
+                        tes++;
+                        console.log(resul.value);
+                    }
+                    if (tes == 5) {
+                        palindro.value++;
+                    }
+                    y--;
+                }
+                final.value.push(resul.value);
+            });
+        };
+
         return {
             tamanho,
             palavra,
@@ -194,13 +265,19 @@ export default {
             gerador,
             valores,
             palindromo,
-            encontrarpalindromo,            
+            encontrarpalindromo,
+
+            /////////////
+            gerarteste,
+            final,
+            palindro,
+            naopalindro,
         };
     },
 };
 </script>
 
-<style>
+<style scoped>
 .container {
     max-width: 50rem;
     padding-top: 1rem;
@@ -234,7 +311,7 @@ input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 2px;
     cursor: pointer;
-    animate: 0.2s;
+
     box-shadow: 1px 1px 1px #000000;
     background: #010305;
     border-radius: 14px;
@@ -258,7 +335,7 @@ input[type="range"]::-moz-range-track {
     width: 100%;
     height: 2px;
     cursor: pointer;
-    animate: 0.2s;
+
     box-shadow: 1px 1px 1px #000000;
     background: #010305;
     border-radius: 14px;
@@ -277,7 +354,7 @@ input[type="range"]::-ms-track {
     width: 100%;
     height: 2px;
     cursor: pointer;
-    animate: 0.2s;
+
     background: transparent;
     border-color: transparent;
     color: transparent;

@@ -1,6 +1,6 @@
 <template>
     <h1 class="titulo">{{ titulo }}</h1>
-    <h1 class="rank">{{ 1000 }} Ms</h1>
+    <h1 class="rank">{{ pontuacao }} Ms</h1>
 </template>
 
 <script>
