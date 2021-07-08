@@ -2,7 +2,7 @@
     <div class="container p-2">
         <button @click="start" :disabled="jogando">Iniciar</button>
         <bloco v-if="jogando" :delay="delay" @end="endgame" />
-        <resultado v-if="mostrarResultado" :pontuacao="pontuacao"/>
+        <resultado v-if="mostrarResultado" :pontuacao="pontuacao" />
     </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
         };
 
         const endgame = (temporeacao) => {
-            console.log(temporeacao)
+            console.log(temporeacao);
             pontuacao.value = temporeacao;
             jogando.value = false;
             mostrarResultado.value = true;

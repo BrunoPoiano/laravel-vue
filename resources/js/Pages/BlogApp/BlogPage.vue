@@ -16,7 +16,8 @@
         </div>
 
         <div class="row" v-if="posts.length">
-          <div class="" v-for="(post, index) in posts" :key="index">
+          <transition-group name="list" tag="p">
+          <div class="" v-for="post in posts" :key="post.id">
             <h5 class="card-secao text-left fw-bold pt-3">
               {{ post.nome }}
             </h5>
@@ -71,6 +72,7 @@
                 </div>
               </div>
             </div>
+          </transition-group>
           </div>
         <div v-else>
           <h1>Carregando...</h1>
@@ -157,7 +159,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 
 .card-title {
@@ -181,5 +183,20 @@ export default {
   font-weight: bold;
   color: #777;
   cursor: pointer;
+}
+
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>

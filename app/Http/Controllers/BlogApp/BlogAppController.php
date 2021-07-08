@@ -114,34 +114,6 @@ class BlogAppController extends Controller
         return false;
     }
 
-    public function secao()
-    {
-
-        $s1 = new Secao();
-        $s1->nome = 'Engraçado';
-        $s1->save();
-
-        $s2 = new Secao();
-        $s2->nome = 'Comida';
-        $s2->save();
-
-        $s3 = new Secao();
-        $s3->nome = 'Animais';
-        $s3->save();
-
-        $s4 = new Secao();
-        $s4->nome = 'Incrivel';
-        $s4->save();
-
-        $s5 = new Secao();
-        $s5->nome = 'Filmes e Tv';
-        $s5->save();
-
-        $s6 = new Secao();
-        $s6->nome = 'HumorNegro';
-        $s6->save();
-    }
-
     ///////////////////////////////// PAGINA CODE ///////////////////////////////
 
     public function pagina($id)

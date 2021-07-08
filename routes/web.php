@@ -42,3 +42,6 @@ Route::prefix('/shoppingcart')->middleware(['auth:sanctum', 'verified'])->name('
 
 //Direcionar jogos de palavras
 Route::prefix('/palavras')->middleware(['auth:sanctum', 'verified'])->name('palavras.layout.')->group(base_path('routes/palavras/palavras.php'));
+
+//Direcionar Quiz app
+Route::prefix('/quiz')->middleware(['auth:sanctum', 'verified'])->name('quiz.layout.')->group(base_path('routes/quizapp/quiz.php'));

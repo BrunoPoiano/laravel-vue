@@ -3,8 +3,6 @@
 use App\Http\Controllers\BlogApp\BlogAppController;
 use Illuminate\Support\Facades\Route;
 
-//Route::get('/secao', [App\Http\Controllers\BlogApp\BlogAppController::class, 'secao']);
-
 Route::get('/index', [BlogAppController::class, 'index'])->name('index');
 Route::get('/getSecao',[BlogAppController::class, 'getSecao'])->name('getSecao');
 
