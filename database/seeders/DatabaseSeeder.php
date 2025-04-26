@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
 
         foreach ($user as $user) {
             Product::factory()
-                   ->count(5)
-                   ->create([
-                       'user_id' => $user->id,
-                   ]);
+                ->count(5)
+                ->create([
+                    'user_id' => $user->id,
+                ]);
         }
 
     }
