@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class ProductsController extends Controller
 
         $products = $products->paginate($perPage, ['*'], 'page', $page);
 
-        return response()->json($products, 200);
+        return ProductResource::collection($products)->response()->getData(true);
     }
 
     public function store(Request $request)

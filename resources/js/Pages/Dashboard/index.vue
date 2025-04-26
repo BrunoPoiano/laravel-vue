@@ -40,9 +40,9 @@ const getProducts = () => {
             },
         })
         .then((response) => {
-            const { data, ...pagination_data } = response.data;
+            const { data, meta } = response.data;
 
-            pagination.value = pagination_data;
+            pagination.value = meta;
             products.value = data.map((product: Product) => ({
                 id: product.id,
                 name: product.name,

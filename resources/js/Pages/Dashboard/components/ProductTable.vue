@@ -16,13 +16,12 @@ const props = defineProps({
         default: false,
     },
     products: {
-        type: Array,
-        default: () => [],
-        validator: (value: unknown) => Array.isArray(value),
+        type: Array as () => Product[],
+        required: true,
     },
     pagination: {
-        type: Object,
-        default: () => ({ total: 0, per_page: 10, current_page: 1 }) as Pagination,
+        type: Object as () => Pagination,
+        required: true,
     },
     search: {
         type: String,
