@@ -15,6 +15,17 @@ test('authenticated users can create products', function () {
     $response->assertStatus(201);
 });
 
+
+test('unauthenticated users cannot create products', function () {
+    $response = $this->postJson('/products', [
+        'name' => 'Test Product',
+        'description' => 'Test Description',
+        'price' => 100,
+        'quantity' => 1
+    ]);
+    $response->assertStatus(401);
+});
+
 test('authenticated users cannot create products without name', function () {
     $user = User::factory()->create();
     $this->actingAs($user);

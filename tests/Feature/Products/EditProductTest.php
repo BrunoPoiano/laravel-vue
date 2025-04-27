@@ -24,6 +24,17 @@ test('authenticated users can edit products', function () {
     ]);
     $response->assertStatus(200);
 });
+
+test('unauthenticated users cannot edit products', function () {
+    $response = $this->putJson('/products/' . 1, [
+        'name' => 'Test Product',
+        'description' => 'Test Description',
+        'price' => 100,
+        'quantity' => 1
+    ]);
+    $response->assertStatus(401);
+});
+
 test('authenticated users cannot edit products without name', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
