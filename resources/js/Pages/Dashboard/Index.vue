@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductFilter from '@/Pages/Dashboard/components/ProductFilter.vue';
 import ProductModal from '@/Pages/Dashboard/components/ProductModal.vue';
 import ProductTable from '@/Pages/Dashboard/components/ProductTable.vue';
+import { checkInertiaParamItemReturnsArray, checkInertiaParamItemReturnsObject } from '@/utils/typeFunctions';
 import { Head, usePage } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
@@ -15,8 +16,8 @@ onMounted(() => {
         fetchProducts();
     } else {
         updateFilters(filters);
-        updatePagination(pagination);
-        updateProducts(typeof products === 'object' && products !== null && 'data' in products && Array.isArray(products.data) ? products.data : []);
+        updatePagination(checkInertiaParamItemReturnsObject(pagination));
+        updateProducts(checkInertiaParamItemReturnsArray(products));
     }
 });
 </script>

@@ -1,3 +1,5 @@
+import { isObject } from "@vueuse/core";
+
 export const isNumeric = (value: any): boolean => {
     return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(value);
 };
@@ -20,15 +22,15 @@ export const IsNumberOrDefault = (value: unknown, defaultValue = 0): number => {
 };
 
 export const isString = (value: unknown): value is string =>
-    /* Verifica se o tipo é uma string */
+    /* Checks if the value is a string */
     typeof value === 'string';
 
 export const isNumber = (value: unknown): value is number =>
-    /* Verifica se o tipo é um número */
+    /* Checks if the value is a number */
     typeof value === 'number';
 
 export const notEmptyString = (value: unknown): value is string =>
-    /* Verifica se o tipo é uma string e se ela não está vazia */
+    /* Checks if the value is a string and it's not empty */
     isString(value) && value.trim() !== '';
 
 export const IsString = <T = null>(value: unknown, defaultValue = ''): string | T => {
@@ -38,3 +40,11 @@ export const IsString = <T = null>(value: unknown, defaultValue = ''): string | 
 
     return defaultValue;
 };
+
+export const checkInertiaParamItemReturnsObject = <T = object>(item: unknown): T => {
+    return (typeof item === 'object' && item !== null && 'data' in item && isObject(item.data) ? item.data : {}) as T;
+}
+
+export const checkInertiaParamItemReturnsArray = <T = object>(item: unknown): T[] => {
+    return (typeof item === 'object' && item !== null && 'data' in item && Array.isArray(item.data) ? item.data : []) as T[];
+}
