@@ -29,19 +29,19 @@ test('authenticated users can delete products', function () {
     $this->actingAs($user);
 
     $response = $this->post('/products', [
-        'name' => 'Test Product',
+        'name'        => 'Test Product',
         'description' => 'Test Description',
-        'price' => 100,
-        'quantity' => 1
+        'price'       => 100,
+        'quantity'    => 1,
     ]);
     $response->assertStatus(201);
 
-    $product = Product::first();
-    $response = $this->delete('/products/' . $product->id);
+    $product  = Product::first();
+    $response = $this->delete('/products/'.$product->id);
     $response->assertStatus(200);
 });
 
 test('unauthenticated users cannot delete products', function () {
-    $response = $this->deleteJson('/products/' . 1);;
+    $response = $this->deleteJson('/products/'. 1);
     $response->assertStatus(401);
 });
