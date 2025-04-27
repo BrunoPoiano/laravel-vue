@@ -13,8 +13,8 @@ export default {
         };
     },
     created() {
-        if (this.pagination?.per_page) {
-            this.perPage = this.pagination.per_page;
+        if (this.pagination?.perPage) {
+            this.perPage = this.pagination.perPage;
         }
     },
     computed: {
@@ -48,10 +48,10 @@ export default {
         },
     },
     watch: {
-        'pagination.last_page': {
+        'pagination.lastPage': {
             handler() {
-                if (this.pagination && this.pagination.current_page > this.pagination.last_page) {
-                    this.$emit('pageChange', this.pagination.last_page);
+                if (this.pagination && this.pagination.currentPage > this.pagination.lastPage) {
+                    this.$emit('pageChange', this.pagination.lastPage);
                 }
             },
         },
@@ -70,11 +70,11 @@ export default {
 <template>
     <div class="my-12 flex flex-col justify-center gap-1 px-5" v-if="pagination && pagination.total > 4">
         <div class="flex justify-center gap-5 align-middle">
-            <a href="#" @click="currentPageChange(pagination.current_page - 1)"> < </a>
-            <a v-for="(_, index) of pagination.last_page" :key="index" href="#" @click="currentPageChange(index + 1)">
+            <a href="#" @click="currentPageChange(pagination.currentPage - 1)"> < </a>
+            <a v-for="(_, index) of pagination.lastPage" :key="index" href="#" @click="currentPageChange(index + 1)">
                 <i class="fas fa-chevron-left">{{ index + 1 }}</i>
             </a>
-            <a href="#" @click="currentPageChange(pagination.current_page + 1)"> > </a>
+            <a href="#" @click="currentPageChange(pagination.currentPage + 1)"> > </a>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-2.5">
             <div class="flex-grow">

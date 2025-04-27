@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             Product::factory()
                 ->count(5)
                 ->create([
-                    'user_id' => $user->id,
+                    'user_id' => 1,
                 ]);
         }
 

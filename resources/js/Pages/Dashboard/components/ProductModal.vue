@@ -2,10 +2,12 @@
 import ApplicationButton from '@/Components/ApplicationButton.vue';
 import Input from '@/Components/ApplicationForm/Input.vue';
 import Modal from '@/Components/Modal.vue';
-import axiosInstance from '@/lib/axios';
+import { useProducts } from '@/composables/useProducts';
 import type { Product } from '@/types/products';
 import { IsNumberOrDefault, IsString } from '@/utils/typeFunctions';
 import { ref } from 'vue';
+
+const { createProduct, editProduct } = useProducts();
 
 const openModal = ref<boolean>(false);
 const product_value = ref<Product>({
@@ -14,8 +16,6 @@ const product_value = ref<Product>({
     price: 0,
     quantity: 0,
 });
-
-const emit = defineEmits(['refreshTable']);
 
 const props = defineProps({
     product: {
@@ -50,21 +50,16 @@ const sendForm = (e: Event) => {
     };
 
     if (props.product?.id) {
-        axiosInstance
-            .put(`products/${props.product.id}`, product_value.value)
+        editProduct(product_value.value, props.product.id)
             .then(() => {
-                console.log('Product created successfully');
-                emit('refreshTable');
                 toggleModal(false);
             })
             .catch((error) => {
-                console.error('Error creating product:', error);
+                console.error('Error editing product:', error);
             });
     } else {
-        axiosInstance
-            .post('products', product_value.value)
+        createProduct(product_value.value)
             .then(() => {
-                console.log('Product created successfully');
                 toggleModal(false);
             })
             .catch((error) => {
