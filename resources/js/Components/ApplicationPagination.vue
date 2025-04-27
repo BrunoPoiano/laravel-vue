@@ -68,7 +68,7 @@ export default {
 </script>
 
 <template>
-    <div class="my-12 flex flex-col justify-center gap-1 px-5" v-if="pagination && pagination.total > 4">
+    <div class="my-12 flex flex-col justify-center gap-1 px-5">
         <div class="flex justify-center gap-5 align-middle">
             <a href="#" @click="currentPageChange(pagination.currentPage - 1)"> < </a>
             <a v-for="(_, index) of pagination.lastPage" :key="index" href="#" @click="currentPageChange(index + 1)">

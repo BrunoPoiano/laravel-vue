@@ -19,7 +19,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+
+
+Route::middleware(['auth', "verified"])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('', [ProfileController::class, 'update'])->name('profile.update');
@@ -27,7 +29,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('products')->group(function () {
-        Route::get('', [ProductsController::class, 'list'])->name('products.index');
+        Route::get('', [ProductsController::class, 'index'])->name('products.index');
+        Route::get('list', [ProductsController::class, 'list'])->name('products.list');
         Route::post('', [ProductsController::class, 'store'])->name('products.store');
         Route::prefix('{product}')->group(function () {
             Route::put('', [ProductsController::class, 'edit'])->name('products.edit');

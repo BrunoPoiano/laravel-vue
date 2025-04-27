@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import Input from '@/Components/ApplicationForm/Input.vue';
 import { useProducts } from '@/composables/useProducts';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ProductFilter from '@/Pages/Dashboard/components/ProductFilter.vue';
 import ProductModal from '@/Pages/Dashboard/components/ProductModal.vue';
 import ProductTable from '@/Pages/Dashboard/components/ProductTable.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
-const { error, filters, fetchProducts, setupWatcher } = useProducts();
-
+const { error, updateFilters, updateProducts, updatePagination } = useProducts();
+const { filters, products, pagination } = usePage().props;
 onMounted(() => {
-    setupWatcher();
-    fetchProducts();
+    console.log(filters);
+    console.log(products.data);
+    console.log(pagination);
+    updateFilters(filters);
+    updatePagination(pagination);
+    updateProducts(products?.data || []);
 });
 </script>
 
@@ -31,7 +35,7 @@ onMounted(() => {
                 <div class="overflow-hidden bg-white p-5 shadow-sm sm:rounded-lg">
                     <div v-if="error" class="error">{{ error }}</div>
                     <div class="">
-                        <Input type="text" placeholder="Search" v-model="filters.search" />
+                        <ProductFilter />
                         <ProductTable />
                     </div>
                 </div>

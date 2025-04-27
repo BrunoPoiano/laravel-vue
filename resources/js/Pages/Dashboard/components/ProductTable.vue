@@ -6,7 +6,7 @@ import ApplicationTable from '@/Components/ApplicationTable.vue';
 import { useProducts } from '@/composables/useProducts';
 import ProductModal from '@/Pages/Dashboard/components/ProductModal.vue';
 
-const { loading, filters, products, pagination, pageChange, perPageChange, fetchProducts, deleteProduct, deletingId } = useProducts();
+const { loading, filters, products, pagination, pageChange, perPageChange, deleteProduct, deletingId } = useProducts();
 
 const products_headers = ['id', 'name', 'description', 'quantity', 'price'];
 </script>
@@ -45,7 +45,6 @@ const products_headers = ['id', 'name', 'description', 'quantity', 'price'];
             </tr>
         </ApplicationTable>
         <ApplicationPagination
-            v-if="pagination"
             :pagination="pagination"
             @pageChange="(page) => pageChange(page)"
             @perPageChange="(perPage) => perPageChange(perPage)"

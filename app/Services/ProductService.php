@@ -33,13 +33,11 @@ class ProductService
                     $query->where('name', 'like', "%{$filters['search']}%")
                         ->orWhere('description', 'like', "%{$filters['search']}%");
                 })
-                ->when(isset($filters['category']), function ($query) use ($filters) {
-                    $query->where('category', $filters['category']);
-                })
                 ->orderBy($filters['sort_by'] ?? 'id', $filters['sort_direction'] ?? 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
         });
     }
+
 
     public function store(array $data): Product
     {
