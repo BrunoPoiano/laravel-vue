@@ -1,4 +1,4 @@
-import { isObject } from "@vueuse/core";
+import { isObject } from '@vueuse/core';
 
 export const isNumeric = (value: any): boolean => {
     return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(value);
@@ -43,8 +43,8 @@ export const IsString = <T = null>(value: unknown, defaultValue = ''): string | 
 
 export const checkInertiaParamItemReturnsObject = <T = object>(item: unknown): T => {
     return (typeof item === 'object' && item !== null && 'data' in item && isObject(item.data) ? item.data : {}) as T;
-}
+};
 
 export const checkInertiaParamItemReturnsArray = <T = object>(item: unknown): T[] => {
     return (typeof item === 'object' && item !== null && 'data' in item && Array.isArray(item.data) ? item.data : []) as T[];
-}
+};
