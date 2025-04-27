@@ -7,15 +7,17 @@ import ProductTable from '@/Pages/Dashboard/components/ProductTable.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
-const { error, updateFilters, updateProducts, updatePagination } = useProducts();
+const { error, updateFilters, updateProducts, updatePagination, fetchProducts } = useProducts();
 const { filters, products, pagination } = usePage().props;
+
 onMounted(() => {
-    console.log(filters);
-    console.log(products.data);
-    console.log(pagination);
-    updateFilters(filters);
-    updatePagination(pagination);
-    updateProducts(products?.data || []);
+    if (!filters) {
+        fetchProducts();
+    } else {
+        updateFilters(filters);
+        updatePagination(pagination);
+        updateProducts(typeof products === 'object' && products !== null && 'data' in products && Array.isArray(products.data) ? products.data : []);
+    }
 });
 </script>
 

@@ -19,9 +19,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
-Route::middleware(['auth', "verified"])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('', [ProfileController::class, 'update'])->name('profile.update');

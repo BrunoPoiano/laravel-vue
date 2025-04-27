@@ -38,7 +38,6 @@ class ProductService
         });
     }
 
-
     public function store(array $data): Product
     {
         $user = Auth::user();
@@ -83,8 +82,7 @@ class ProductService
      * if it doesn't already exist, ensuring we can track and clear all
      * product-related caches when needed.
      *
-     * @param string $key The cache key to store
-     * @return void
+     * @param  string  $key  The cache key to store
      */
     protected function storeCacheKey(string $key): void
     {
@@ -102,8 +100,6 @@ class ProductService
      * This method retrieves all the cached product keys from the registry
      * and systematically removes each one from the cache. Finally, it also
      * removes the registry itself to ensure complete cache invalidation.
-     *
-     * @return void
      */
     protected function clearProductCache(): void
     {

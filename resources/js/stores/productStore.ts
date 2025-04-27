@@ -4,6 +4,7 @@ import type { Pagination } from '@/types/pagination';
 import type { Product } from '@/types/products';
 import { debounce } from '@/utils/debounce';
 import { IsNumberOrDefault, IsString } from '@/utils/typeFunctions';
+import { router } from '@inertiajs/vue3';
 import { defineStore } from 'pinia';
 import { watch } from 'vue';
 
@@ -44,17 +45,19 @@ export const useProductStore = defineStore('products', {
     },
 
     actions: {
+        // Fetches products from the API with current filters and pagination
         async fetchProducts() {
             this.loading = true;
             this.error = null;
 
             try {
+                const query = {
+                    ...this.filters,
+                    per_page: this.pagination.perPage,
+                    current_page: this.pagination.currentPage,
+                };
                 const { data } = await axiosInstance.get('products/list', {
-                    params: {
-                        ...this.filters,
-                        per_page: this.pagination.perPage,
-                        current_page: this.pagination.currentPage,
-                    },
+                    params: query,
                 });
 
                 this.products = data.data.map((product: Product) => ({
@@ -73,6 +76,14 @@ export const useProductStore = defineStore('products', {
                     to: IsNumberOrDefault(data.meta.to, 1),
                     total: IsNumberOrDefault(data.meta.total, 1),
                 };
+
+                router.visit(window.location.pathname, {
+                    method: 'get',
+                    data: query,
+                    preserveState: true,
+                    replace: true,
+                    only: [],
+                });
             } catch (error) {
                 this.error = 'Failed to fetch products';
                 console.error(error);
@@ -81,21 +92,25 @@ export const useProductStore = defineStore('products', {
             }
         },
 
+        // Debounces the fetchProducts call to prevent excessive API requests
         debouncedFetchProducts() {
             console.log('debouncedFetchProducts');
             debounce(() => this.fetchProducts(), 800);
         },
 
+        // Updates current page and fetches products
         pageChange(page: number) {
             this.pagination.currentPage = page;
             this.fetchProducts();
         },
 
+        // Updates items per page and fetches products
         perPageChange(perPage: number) {
             this.pagination.perPage = perPage;
             this.fetchProducts();
         },
 
+        // Deletes a product by ID
         async deleteProduct(product_id: number): Promise<void> {
             return await new Promise((resolve, reject) => {
                 if (!product_id || this.deletingId === product_id) return;
@@ -114,6 +129,7 @@ export const useProductStore = defineStore('products', {
             });
         },
 
+        // Creates a new product
         async createProduct(product: Product): Promise<void> {
             return await new Promise((resolve, reject) => {
                 try {
@@ -128,6 +144,7 @@ export const useProductStore = defineStore('products', {
             });
         },
 
+        // Updates an existing product
         async editProduct(product: Product, product_id: number): Promise<void> {
             return await new Promise((resolve, reject) => {
                 try {
@@ -142,6 +159,7 @@ export const useProductStore = defineStore('products', {
             });
         },
 
+        // Resets all filters to default values
         resetFilters() {
             this.filters = {
                 search: '',
@@ -149,6 +167,7 @@ export const useProductStore = defineStore('products', {
             this.fetchProducts();
         },
 
+        // Updates filters with new values
         updateFilters(filters: unknown) {
             const filtersObj = (filters as Record<string, unknown>) || {};
 
@@ -157,9 +176,9 @@ export const useProductStore = defineStore('products', {
             };
         },
 
+        // Updates product list with type safety
         updateProducts(products: unknown[]) {
             if (!Array.isArray(products)) {
-                // this.fetchProducts();
                 return;
             }
 
@@ -177,6 +196,7 @@ export const useProductStore = defineStore('products', {
             this.products = parsedProducts;
         },
 
+        // Updates pagination information
         updatePagination(pagination: unknown) {
             const paginationObj = (pagination as Record<string, unknown>) || {};
 
@@ -190,6 +210,7 @@ export const useProductStore = defineStore('products', {
             };
         },
 
+        // Sets up watchers for reactive data fetching
         setupWatcher() {
             if (!this.debouncedFetchProductsFn) {
                 this.debouncedFetchProductsFn = debounce(() => this.fetchProducts(), 800);

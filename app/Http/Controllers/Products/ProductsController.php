@@ -15,36 +15,36 @@ class ProductsController extends Controller
 {
     protected $productService;
 
-       public function __construct(ProductService $productService)
-       {
-           $this->productService = $productService;
-       }
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
 
-       public function index(Request $request)
-       {
-           $filters = request()->only(['search', 'category', 'per_page', 'current_page']);
+    public function index(Request $request)
+    {
+        $filters = request()->only(['search', 'category', 'per_page', 'current_page']);
 
-           $perPage = $filters['per_page']     ?? 10;
-           $page    = $filters['current_page'] ?? 1;
+        $perPage = $filters['per_page']     ?? 10;
+        $page    = $filters['current_page'] ?? 1;
 
-           $products = $this->productService->getFilteredProducts($filters, $perPage, $page);
+        $products = $this->productService->getFilteredProducts($filters, $perPage, $page);
 
-           // Get pagination data
-           $paginationData = [
-               'total' => $products->total(),
-               'per_page' => $products->perPage(),
-               'current_page' => $products->currentPage(),
-               'last_page' => $products->lastPage(),
-               'from' => $products->firstItem(),
-               'to' => $products->lastItem(),
-           ];
+        // Get pagination data
+        $paginationData = [
+            'total'        => $products->total(),
+            'per_page'     => $products->perPage(),
+            'current_page' => $products->currentPage(),
+            'last_page'    => $products->lastPage(),
+            'from'         => $products->firstItem(),
+            'to'           => $products->lastItem(),
+        ];
 
-           return Inertia::render('Dashboard/Index', [
-               'products' => ProductResource::collection($products),
-               'filters' => $filters,
-               'pagination' => $paginationData
-           ]);
-       }
+        return Inertia::render('Dashboard/Index', [
+            'products'   => ProductResource::collection($products),
+            'filters'    => $filters,
+            'pagination' => $paginationData,
+        ]);
+    }
 
     public function list(Request $request)
     {
