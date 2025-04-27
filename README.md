@@ -2,7 +2,7 @@
 
 A web application built with Laravel 10, Vue 3, and Inertia.js.
 
-## 🔧 Technologies & Tools
+## Technologies & Tools
 
 - Laravel 10.x
 - Vue.js 3.x
@@ -13,14 +13,14 @@ A web application built with Laravel 10, Vue 3, and Inertia.js.
 - Pinia (Vue Store)
 - Lucide Icons
 
-## 📋 Requirements
+## Requirements
 
 - PHP 8.1 or higher
 - Node.js 16+ and npm
 - Composer
 - MySQL/PostgreSQL
 
-## 🚀 Installation
+## Installation
 
 1. Clone the repository:
 ```bash
@@ -59,7 +59,7 @@ DB_PASSWORD=your_password
 php artisan migrate
 ```
 
-## 🏃‍♂️ Development
+## Development
 
 1. Start the Laravel development server:
 ```bash
@@ -71,7 +71,7 @@ php artisan serve
 npm run dev
 ```
 
-## 🏗️ Building for Production
+## Building for Production
 
 1. Build front-end assets:
 ```bash
@@ -85,33 +85,33 @@ npm run build
 php artisan optimize
 ```
 
-## 🎨 Code Style
+3. Run tests:
+```bash
+php artisan test
+```
 
-This project uses Prettier for code formatting. The configuration can be found in `.prettierrc`.
+## API Routes
 
-Key formatting rules:
-- Semi colons: enabled
-- Single quotes: enabled
-- Tab width: 4 spaces
-- Print width: 150 characters
-- Tailwind CSS class sorting: enabled
+### Profile Routes
+```
+GET    /profile                 - Edit profile view [profile.edit]
+PATCH  /profile                 - Update profile [profile.update]
+DELETE /profile                 - Delete profile [profile.destroy]
+```
 
-## 📦 Project Structure
+### Product Routes
+```
+GET    /products                - View all products [products.index]
+GET    /products/list           - Get products list [products.list]
+POST   /products                - Create a new product [products.store]
+PUT    /products/{product}      - Edit a specific product [products.edit]
+DELETE /products/{product}      - Delete a specific product [products.destroy]
+```
+
+## Project Structure
 
 - `/resources/js` - Vue components and application logic
 - `/resources/css` - Stylesheets and Tailwind CSS configuration
 - `/app` - Laravel PHP files
 - `/routes` - API and web routes
 - `/database` - Migrations and seeders
-
-## 🔒 Security
-
-Remember to:
-- Set proper environment variables in production
-- Keep dependencies updated
-- Follow Laravel's security best practices
-- Enable HTTPS in production
-
-## 📝 License
-
-[MIT License](LICENSE.md)
