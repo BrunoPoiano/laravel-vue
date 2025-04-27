@@ -5,6 +5,10 @@ import { onMounted } from 'vue';
 
 const { filters, setupWatcher } = useProducts();
 
+/**
+ * Sets up watchers for reactive search functionality
+ * Called when component is mounted
+ */
 onMounted(() => {
     setupWatcher();
 });

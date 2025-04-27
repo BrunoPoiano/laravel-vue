@@ -11,6 +11,11 @@ import { onMounted } from 'vue';
 const { error, updateFilters, updateProducts, updatePagination, fetchProducts } = useProducts();
 const { filters, products, pagination } = usePage().props;
 
+/**
+ * Initializes product data on component mount
+ * If filters exist from server-side rendering, uses those
+ * Otherwise fetches fresh product data
+ */
 onMounted(() => {
     if (!filters) {
         fetchProducts();

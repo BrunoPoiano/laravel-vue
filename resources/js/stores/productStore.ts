@@ -29,11 +29,26 @@ export const useProductStore = defineStore('products', {
     }),
 
     getters: {
+        /**
+         * Returns the filtered list of products
+         */
         filteredProducts: (state) => state.products,
+        
+        /**
+         * Indicates if there are any error states
+         */
         hasErrors: (state) => state.error !== null,
+        
+        /**
+         * Returns current filter settings
+         */
         filtersInfo: (state) => ({
             search: state.filters.search,
         }),
+        
+        /**
+         * Returns current pagination state
+         */
         paginationInfo: (state) => ({
             perPage: state.pagination.perPage,
             currentPage: state.pagination.currentPage,
@@ -45,7 +60,10 @@ export const useProductStore = defineStore('products', {
     },
 
     actions: {
-        // Fetches products from the API with current filters and pagination
+        /**
+         * Fetches products from the API with current filters and pagination
+         * Updates store state with the response data
+         */
         async fetchProducts() {
             this.loading = true;
             this.error = null;
@@ -92,25 +110,38 @@ export const useProductStore = defineStore('products', {
             }
         },
 
-        // Debounces the fetchProducts call to prevent excessive API requests
+        /**
+         * Debounces the fetchProducts call to prevent excessive API requests
+         * Uses 800ms delay between calls
+         */
         debouncedFetchProducts() {
             console.log('debouncedFetchProducts');
             debounce(() => this.fetchProducts(), 800);
         },
 
-        // Updates current page and fetches products
+        /**
+         * Updates current page and triggers product refresh
+         * @param page The page number to load
+         */
         pageChange(page: number) {
             this.pagination.currentPage = page;
             this.fetchProducts();
         },
 
-        // Updates items per page and fetches products
+        /**
+         * Updates items per page and triggers product refresh
+         * @param perPage Number of items to show per page
+         */
         perPageChange(perPage: number) {
             this.pagination.perPage = perPage;
             this.fetchProducts();
         },
 
-        // Deletes a product by ID
+        /**
+         * Deletes a product by ID
+         * Prevents duplicate delete requests for the same product
+         * @param product_id ID of the product to delete
+         */
         async deleteProduct(product_id: number): Promise<void> {
             return await new Promise((resolve, reject) => {
                 if (!product_id || this.deletingId === product_id) return;
@@ -129,7 +160,10 @@ export const useProductStore = defineStore('products', {
             });
         },
 
-        // Creates a new product
+        /**
+         * Creates a new product
+         * @param product Product data to create
+         */
         async createProduct(product: Product): Promise<void> {
             return await new Promise((resolve, reject) => {
                 try {
@@ -144,7 +178,11 @@ export const useProductStore = defineStore('products', {
             });
         },
 
-        // Updates an existing product
+        /**
+         * Updates an existing product
+         * @param product Updated product data
+         * @param product_id ID of the product to update
+         */
         async editProduct(product: Product, product_id: number): Promise<void> {
             return await new Promise((resolve, reject) => {
                 try {
@@ -159,7 +197,9 @@ export const useProductStore = defineStore('products', {
             });
         },
 
-        // Resets all filters to default values
+        /**
+         * Resets filters to default values and refreshes products
+         */
         resetFilters() {
             this.filters = {
                 search: '',
@@ -167,7 +207,10 @@ export const useProductStore = defineStore('products', {
             this.fetchProducts();
         },
 
-        // Updates filters with new values
+        /**
+         * Updates filters with new values ensuring type safety
+         * @param filters Raw filter data to process
+         */
         updateFilters(filters: unknown) {
             const filtersObj = (filters as Record<string, unknown>) || {};
 
@@ -176,7 +219,11 @@ export const useProductStore = defineStore('products', {
             };
         },
 
-        // Updates product list with type safety
+        /**
+         * Updates product list with type safety
+         * Maps raw data to strongly typed product objects
+         * @param products Raw product data to process
+         */
         updateProducts(products: unknown[]) {
             if (!Array.isArray(products)) {
                 return;
@@ -196,7 +243,10 @@ export const useProductStore = defineStore('products', {
             this.products = parsedProducts;
         },
 
-        // Updates pagination information
+        /**
+         * Updates pagination information with type safety
+         * @param pagination Raw pagination data to process
+         */
         updatePagination(pagination: unknown) {
             const paginationObj = (pagination as Record<string, unknown>) || {};
 
@@ -210,7 +260,10 @@ export const useProductStore = defineStore('products', {
             };
         },
 
-        // Sets up watchers for reactive data fetching
+        /**
+         * Sets up watchers for reactive data fetching
+         * Debounces search input to prevent excessive API calls
+         */
         setupWatcher() {
             if (!this.debouncedFetchProductsFn) {
                 this.debouncedFetchProductsFn = debounce(() => this.fetchProducts(), 800);

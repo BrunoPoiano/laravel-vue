@@ -24,6 +24,10 @@ const props = defineProps({
     },
 });
 
+/**
+ * Toggles the modal visibility and initializes form data if opening with a product
+ * @param value Boolean indicating whether to open (true) or close (false) the modal
+ */
 const toggleModal = (value: boolean) => {
     if (value && props.product) {
         product_value.value = {
@@ -38,6 +42,11 @@ const toggleModal = (value: boolean) => {
     openModal.value = value;
 };
 
+/**
+ * Handles form submission for creating or editing products
+ * Validates and processes form data before making API request
+ * @param e Form submission event
+ */
 const sendForm = (e: Event) => {
     const formData = new FormData(e.target as HTMLFormElement);
     const formObject = Object.fromEntries(formData);

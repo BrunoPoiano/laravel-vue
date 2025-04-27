@@ -24,7 +24,6 @@ export function useProducts() {
         updateFilters: store.updateFilters,
         updateProducts: store.updateProducts,
         updatePagination: store.updatePagination,
-
         pageChange: store.pageChange,
         perPageChange: store.perPageChange,
         setupWatcher: store.setupWatcher,

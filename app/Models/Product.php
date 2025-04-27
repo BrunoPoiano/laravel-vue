@@ -39,10 +39,10 @@ class Product extends Model
      * Get the user that owns the product.
      * Defines the relationship between Product and User models.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        // ...existing code...
+        return $this->belongsTo(User::class);
     }
 }
