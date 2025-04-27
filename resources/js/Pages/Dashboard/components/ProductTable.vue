@@ -70,7 +70,7 @@ const deleteProduct = (product: Product) => {
                 <td class="whitespace-nowrap px-6 py-4">$ {{ item.price }}</td>
                 <td>
                     <div class="flex gap-5">
-                        <ProductModal :product="item as Product" />
+                        <ProductModal :product="item as Product" @refreshTable="$emit('refreshTable')" />
                         <ApplicationButton
                             variant="danger"
                             :rounded="true"

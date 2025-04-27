@@ -6,41 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Numeric;
 
 class ProductsController extends Controller
 {
+    public function __construct(protected ProductService $productService) {}
+
     public function list(Request $request)
     {
-        $user = Auth::user();
+        $filters = request()->only(['search', 'category', 'per_page', 'current_page']);
 
-        $products = Product::where('user_id', $user->id);
+        $perPage = $filters['per_page']     ?? 10;
+        $page    = $filters['current_page'] ?? 1;
 
-        // filters
-        $products = $products->where(function ($query) use ($request) {
-            $query->where('name', 'like', '%'.$request->search.'%')
-                ->orWhere('description', 'like', '%'.$request->search.'%');
-        });
-
-        $perPage = $request->per_page     ?? 10;
-        $page    = $request->current_page ?? 1;
-
-        $products->orderBy('created_at', 'desc');
-        $products = $products->paginate($perPage, ['*'], 'page', $page);
+        $products = $this->productService->getFilteredProducts($filters, $perPage, $page);
 
         return ProductResource::collection($products)->response()->getData(true);
+
     }
 
     public function store(ProductRequest $request)
     {
-        $user = Auth::user();
 
-        $product = Product::create([
-            'user_id' => $user->id,
-            ...$request->validated(),
-        ]);
+        $product = $this->productService->store($request->validated());
 
         return response()->json($product, 201);
     }
@@ -49,17 +39,14 @@ class ProductsController extends Controller
     {
         $user = Auth::user();
 
-
         if (intval($user->id) !== intval($product->user_id)) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $product->update($request->validated());
+        $this->productService->edit($product, $request->validated());
 
         return response()->json($product, 200);
     }
-
-
 
     public function destroy(Request $request, Product $product)
     {
@@ -68,7 +55,7 @@ class ProductsController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $product->delete();
+        $this->productService->destroy($product);
 
         return response()->json(['message' => 'Product deleted'], 200);
     }
