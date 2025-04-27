@@ -20,8 +20,8 @@ const props = defineProps({
         required: true,
     },
     pagination: {
-        type: Object as () => Pagination,
-        required: true,
+        type: Object as () => Pagination | null,
+        default: null,
     },
     search: {
         type: String,
@@ -55,9 +55,19 @@ const deleteProduct = (product: Product) => {
     <ApplicationLoading :loading="props.loading">
         <ApplicationTable :headers="products_headers" :empty-message="search ? 'No products found' : 'No products available'">
             <tr v-for="(item, index) in props.products" :key="index">
-                <td v-for="(field, fieldIndex) in products_headers" :key="fieldIndex" class="whitespace-nowrap px-6 py-4">
-                    {{ (item as Product)[field as keyof Product] }}
+                <td class="whitespace-nowrap px-6 py-4">
+                    {{ item.id }}
                 </td>
+                <td class="whitespace-nowrap px-6 py-4">
+                    {{ item.name }}
+                </td>
+                <td class="whitespace-nowrap px-6 py-4">
+                    {{ item.description }}
+                </td>
+                <td class="whitespace-nowrap px-6 py-4">
+                    {{ item.quantity }}
+                </td>
+                <td class="whitespace-nowrap px-6 py-4">$ {{ item.price }}</td>
                 <td>
                     <div class="flex gap-5">
                         <ProductModal :product="item as Product" />

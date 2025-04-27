@@ -15,9 +15,11 @@ const product_value = ref<Product>({
     quantity: 0,
 });
 
+const emit = defineEmits(['refreshTable']);
+
 const props = defineProps({
     product: {
-        type: Object,
+        type: Object as () => Product | null,
         default: null,
     },
 });
@@ -47,11 +49,12 @@ const sendForm = (e: Event) => {
         quantity: IsNumberOrDefault(formObject.quantity, 0),
     };
 
-    if (props.product.id) {
+    if (props.product?.id) {
         axiosInstance
             .put(`products/${props.product.id}`, product_value.value)
             .then(() => {
                 console.log('Product created successfully');
+                emit('refreshTable');
                 toggleModal(false);
             })
             .catch((error) => {
@@ -78,7 +81,7 @@ const sendForm = (e: Event) => {
 
     <Modal :show="openModal" maxWidth="md" @close="toggleModal(false)">
         <div class="grid place-items-center gap-5 p-5">
-            <h4 class="">New Product</h4>
+            <h4>{{ product ? 'Edit Product' : 'New Product' }}</h4>
             <form class="grid w-full" v-on:submit.prevent="sendForm" id="testForm">
                 <Input type="text" placeholder="Name" name="name" label="Name" v-model="product_value.name" required />
                 <Input type="text" placeholder="Description" name="description" label="Description" v-model="product_value.description" />

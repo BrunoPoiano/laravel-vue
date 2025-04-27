@@ -9,11 +9,10 @@ export default {
     },
     data() {
         return {
-            perPage: 10, // Default value instead of accessing this.pagination directly
+            perPage: 10,
         };
     },
     created() {
-        // Set perPage once the component is created and pagination is available
         if (this.pagination?.per_page) {
             this.perPage = this.pagination.per_page;
         }

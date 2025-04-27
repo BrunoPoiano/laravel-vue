@@ -31,7 +31,6 @@ Route::middleware('auth')->group(function () {
         Route::post('', [ProductsController::class, 'store'])->name('products.store');
         Route::prefix('{product}')->group(function () {
             Route::put('', [ProductsController::class, 'edit'])->name('products.edit');
-            Route::patch('', [ProductsController::class, 'update'])->name('products.update');
             Route::delete('', [ProductsController::class, 'destroy'])->name('products.destroy');
         });
     });

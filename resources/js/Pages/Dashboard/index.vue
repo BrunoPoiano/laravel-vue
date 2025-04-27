@@ -7,11 +7,12 @@ import ProductTable from '@/Pages/Dashboard/components/ProductTable.vue';
 import type { Pagination } from '@/types/pagination';
 import type { Product } from '@/types/products';
 import { debounce } from '@/utils/debounce';
+import { IsNumberOrDefault, IsString } from '@/utils/typeFunctions';
 import { Head } from '@inertiajs/vue3';
 import { onMounted, ref, watch } from 'vue';
 
 const search = ref('');
-const pagination = ref<Pagination>();
+const pagination = ref<Pagination | null>(null);
 const products = ref([]);
 const loading = ref<boolean>(false);
 
@@ -42,13 +43,20 @@ const getProducts = () => {
         .then((response) => {
             const { data, meta } = response.data;
 
-            pagination.value = meta;
+            pagination.value = {
+                current_page: IsNumberOrDefault(meta.current_page, 1),
+                from: IsNumberOrDefault(meta.from, 1),
+                last_page: IsNumberOrDefault(meta.last_page, 1),
+                per_page: IsNumberOrDefault(meta.per_page, 10),
+                to: IsNumberOrDefault(meta.to, 1),
+                total: IsNumberOrDefault(meta.total, 1),
+            };
             products.value = data.map((product: Product) => ({
-                id: product.id,
-                name: product.name,
-                description: product.description,
-                quantity: product.quantity,
-                price: `$ ${product.price}`,
+                id: IsNumberOrDefault(product.id, 0),
+                name: IsString(product.name),
+                description: IsString(product.description),
+                quantity: IsNumberOrDefault(product.quantity, 0),
+                price: IsNumberOrDefault(product.price, 0),
             }));
         })
         .catch((error) => {
@@ -75,8 +83,10 @@ onMounted(() => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h3 class="m-0">Products</h3>
-            <ProductModal />
+            <div class="flex justify-between">
+                <h3 class="m-0">Products</h3>
+                <ProductModal @refreshTable="getProducts" />
+            </div>
         </template>
 
         <div class="py-12">

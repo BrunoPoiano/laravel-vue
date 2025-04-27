@@ -2,7 +2,6 @@ export function IsNumberOrDefault(
 	value: unknown,
 	defaultValue: number,
 ): number {
-    console.log(value)
 	if (typeof value === "number") {
 		return value;
 	}
