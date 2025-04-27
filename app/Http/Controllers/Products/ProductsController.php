@@ -12,15 +12,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+/**
+ * Controller for handling product-related HTTP requests.
+ * Manages product CRUD operations and listing with authentication checks.
+ */
 class ProductsController extends Controller
 {
     protected $productService;
 
+    /**
+     * Inject ProductService dependency for business logic handling
+     */
     public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
     }
 
+    /**
+     * Display the main products page with filters and pagination.
+     * Renders the dashboard view with products data using Inertia.
+     *
+     * @param Request $request Contains filter parameters
+     * @return Response Inertia view with products data
+     */
     public function index(Request $request)
     {
         $filters = request()->only(['search', 'per_page', 'current_page']);
@@ -37,6 +51,13 @@ class ProductsController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint for retrieving filtered product list.
+     * Returns JSON formatted product data with pagination.
+     *
+     * @param Request $request Contains filter and pagination parameters
+     * @return JsonResponse Products collection with pagination metadata
+     */
     public function list(Request $request)
     {
         $filters = request()->only(['search', 'category', 'per_page', 'current_page']);
@@ -50,6 +71,13 @@ class ProductsController extends Controller
 
     }
 
+    /**
+     * Create a new product.
+     * Validates input and associates product with authenticated user.
+     *
+     * @param ProductRequest $request Validated product data
+     * @return JsonResponse Created product data with 201 status
+     */
     public function store(ProductRequest $request)
     {
 
@@ -58,6 +86,14 @@ class ProductsController extends Controller
         return response()->json($product, 201);
     }
 
+    /**
+     * Update an existing product.
+     * Validates input and checks product ownership before update.
+     *
+     * @param ProductRequest $request Validated product data
+     * @param Product $product The product to update
+     * @return JsonResponse Updated product data or error response
+     */
     public function edit(ProductRequest $request, Product $product)
     {
         $user = Auth::user();
@@ -71,6 +107,14 @@ class ProductsController extends Controller
         return response()->json($product, 200);
     }
 
+    /**
+     * Delete a product.
+     * Checks product ownership before deletion.
+     *
+     * @param Request $request
+     * @param Product $product The product to delete
+     * @return JsonResponse Success message or error response
+     */
     public function destroy(Request $request, Product $product)
     {
         $user = Auth::user();

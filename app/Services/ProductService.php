@@ -7,12 +7,33 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Service class for handling Product-related business logic with caching support.
+ * Manages CRUD operations and filtered queries for products while maintaining
+ * a cache system to improve performance.
+ */
 class ProductService
 {
+    /**
+     * Key used to store the list of all product-related cache keys.
+     * This registry helps in tracking and invalidating all product caches.
+     */
     protected string $cacheKeyList = 'product_cache_keys';
 
+    /**
+     * Constructor injection of Product model.
+     */
     public function __construct(protected Product $product) {}
 
+    /**
+     * Retrieves a filtered and paginated list of products for the authenticated user.
+     * Implements caching to improve performance of frequently accessed product lists.
+     *
+     * @param array $filters      Array of filters including: search, sort_by, sort_direction
+     * @param int   $perPage     Number of items per page
+     * @param int   $page        Current page number
+     * @return LengthAwarePaginator Paginated collection of filtered products
+     */
     public function getFilteredProducts(array $filters, $perPage, $page): LengthAwarePaginator
     {
         $user = Auth::user();
@@ -38,6 +59,13 @@ class ProductService
         });
     }
 
+    /**
+     * Creates a new product associated with the authenticated user.
+     * Automatically invalidates product cache after successful creation.
+     *
+     * @param array $data Product data including name, description, price, quantity
+     * @return Product   The newly created product instance
+     */
     public function store(array $data): Product
     {
         $user = Auth::user();
@@ -55,6 +83,14 @@ class ProductService
         return $created;
     }
 
+    /**
+     * Updates an existing product with new data.
+     * Automatically invalidates product cache after successful update.
+     *
+     * @param Product $product The product instance to update
+     * @param array   $data    New product data
+     * @return bool           True if update was successful
+     */
     public function edit(Product $product, array $data): bool
     {
         $updated = $product->update($data);
@@ -65,6 +101,13 @@ class ProductService
         return $updated;
     }
 
+    /**
+     * Deletes a product from the database.
+     * Automatically invalidates product cache after successful deletion.
+     *
+     * @param Product $product The product instance to delete
+     * @return bool           True if deletion was successful
+     */
     public function destroy(Product $product): bool
     {
         $deleted = $product->delete();
@@ -76,13 +119,10 @@ class ProductService
     }
 
     /**
-     * Stores a cache key in the cache key registry.
+     * Internal method to store a cache key in the registry.
+     * Ensures we can track and clear all product-related caches when needed.
      *
-     * This method adds a new cache key to the list of product cache keys
-     * if it doesn't already exist, ensuring we can track and clear all
-     * product-related caches when needed.
-     *
-     * @param  string  $key  The cache key to store
+     * @param string $key The cache key to store in registry
      */
     protected function storeCacheKey(string $key): void
     {
@@ -95,11 +135,9 @@ class ProductService
     }
 
     /**
-     * Clears all product-related cache entries.
-     *
-     * This method retrieves all the cached product keys from the registry
-     * and systematically removes each one from the cache. Finally, it also
-     * removes the registry itself to ensure complete cache invalidation.
+     * Internal method to clear all product-related cache entries.
+     * Removes all tracked cache keys and the registry itself.
+     * Called automatically after any product modification operation.
      */
     protected function clearProductCache(): void
     {
