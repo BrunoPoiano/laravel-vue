@@ -24,8 +24,8 @@ A web application built with Laravel 10, Vue 3, and Inertia.js, demonstrating fu
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd laravel-vue-challenge
+git clone git@github.com:BrunoPoiano/laravel-vue.git
+cd laravel-vue
 ```
 
 2. Install PHP dependencies:
